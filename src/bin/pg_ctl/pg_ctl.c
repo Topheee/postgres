@@ -30,6 +30,7 @@
 #include "common/string.h"
 #include "getopt_long.h"
 #include "utils/pidfile.h"
+#include "port/system_proxy.h"
 
 #ifdef WIN32					/* on Unix, we don't need libpq */
 #include "pqexpbuffer.h"
@@ -846,7 +847,7 @@ do_init(void)
 		snprintf(cmd, MAXPGPATH, "\"%s\" %s%s > \"%s\"",
 				 exec_path, pgdata_opt, post_opts, DEVNULL);
 
-	if (system(cmd) != 0)
+	if (system_proxy(cmd) != 0)
 	{
 		write_stderr(_("%s: database system initialization failed\n"), progname);
 		exit(1);

@@ -22,6 +22,7 @@
 #include "fe_utils/simple_list.h"
 #include "getopt_long.h"
 #include "parse_manifest.h"
+#include "port/system_proxy.h"
 
 /*
  * For efficiency, we'd like our hash table containing information about the
@@ -820,7 +821,7 @@ parse_required_wal(verifier_context *context, char *pg_waldump_path,
 								  (uint32) this_wal_range->start_lsn,
 								  (uint32) (this_wal_range->end_lsn >> 32),
 								  (uint32) this_wal_range->end_lsn);
-		if (system(pg_waldump_cmd) != 0)
+		if (system_proxy(pg_waldump_cmd) != 0)
 			report_backup_error(context,
 								"WAL parsing failed for timeline %u",
 								this_wal_range->tli);

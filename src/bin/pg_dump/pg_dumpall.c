@@ -26,6 +26,7 @@
 #include "fe_utils/string_utils.h"
 #include "getopt_long.h"
 #include "pg_backup.h"
+#include "port/system_proxy.h"
 
 /* version string we expect back from pg_dump */
 #define PGDUMP_VERSIONSTR "pg_dump (PostgreSQL) " PG_VERSION "\n"
@@ -1587,7 +1588,7 @@ runPgDump(const char *dbname, const char *create_opts)
 	fflush(stdout);
 	fflush(stderr);
 
-	ret = system(cmd->data);
+	ret = system_proxy(cmd->data);
 
 	destroyPQExpBuffer(cmd);
 	destroyPQExpBuffer(connstrbuf);

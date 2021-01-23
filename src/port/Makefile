@@ -58,6 +58,7 @@ OBJS = \
 	quotes.o \
 	snprintf.o \
 	strerror.o \
+	system_proxy.o \
 	tar.o \
 	thread.o
 

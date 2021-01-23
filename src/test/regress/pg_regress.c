@@ -39,6 +39,7 @@
 #include "pg_config_paths.h"
 #include "pg_regress.h"
 #include "portability/instr_time.h"
+#include "port/system_proxy.h"
 
 /* for resultmap we need a list of pairs of strings */
 typedef struct _resultmap
@@ -274,7 +275,7 @@ stop_postmaster(void)
 				 bindir ? bindir : "",
 				 bindir ? "/" : "",
 				 temp_instance);
-		r = system(buf);
+		r = system_proxy(buf);
 		if (r != 0)
 		{
 			fprintf(stderr, _("\n%s: could not stop postmaster: exit code was %d\n"),
@@ -1141,7 +1142,7 @@ psql_command(const char *database, const char *query,...)
 			 query_escaped,
 			 database);
 
-	if (system(psql_cmd) != 0)
+	if (system_proxy(psql_cmd) != 0)
 	{
 		/* psql probably already reported the error */
 		fprintf(stderr, _("command failed: %s\n"), psql_cmd);
@@ -1341,7 +1342,7 @@ run_diff(const char *cmd, const char *filename)
 {
 	int			r;
 
-	r = system(cmd);
+	r = system_proxy(cmd);
 	if (!WIFEXITED(r) || WEXITSTATUS(r) > 1)
 	{
 		fprintf(stderr, _("diff command failed with status %d: %s\n"), r, cmd);
@@ -2331,7 +2332,7 @@ regression_main(int argc, char *argv[], init_function ifunc, test_function tfunc
 				 debug ? " --debug" : "",
 				 nolocale ? " --no-locale" : "",
 				 outputdir);
-		if (system(buf))
+		if (system_proxy(buf))
 		{
 			fprintf(stderr, _("\n%s: initdb failed\nExamine %s/log/initdb.log for the reason.\nCommand was: %s\n"), progname, outputdir, buf);
 			exit(2);
@@ -2404,7 +2405,7 @@ regression_main(int argc, char *argv[], init_function ifunc, test_function tfunc
 
 		for (i = 0; i < 16; i++)
 		{
-			if (system(buf2) == 0)
+			if (system_proxy(buf2) == 0)
 			{
 				char		s[16];
 
@@ -2467,7 +2468,7 @@ regression_main(int argc, char *argv[], init_function ifunc, test_function tfunc
 		for (i = 0; i < wait_seconds; i++)
 		{
 			/* Done if psql succeeds */
-			if (system(buf2) == 0)
+			if (system_proxy(buf2) == 0)
 				break;
 
 			/*

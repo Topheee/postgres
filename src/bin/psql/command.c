@@ -44,6 +44,7 @@
 #include "psqlscanslash.h"
 #include "settings.h"
 #include "variables.h"
+#include "port/system_proxy.h"
 
 /*
  * Editable database object types.
@@ -3685,7 +3686,7 @@ editFile(const char *fname, int lineno)
 		sys = psprintf("\"%s\" \"%s\"",
 					   editorName, fname);
 #endif
-	result = system(sys);
+	result = system_proxy(sys);
 	if (result == -1)
 		pg_log_error("could not start editor \"%s\"", editorName);
 	else if (result == 127)
@@ -4735,11 +4736,11 @@ do_shell(const char *command)
 #else
 		sys = psprintf("\"%s\"", shellName);
 #endif
-		result = system(sys);
+		result = system_proxy(sys);
 		free(sys);
 	}
 	else
-		result = system(command);
+		result = system_proxy(command);
 
 	if (result == 127 || result == -1)
 	{

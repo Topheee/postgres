@@ -22,6 +22,7 @@
 #include "common/archive.h"
 #include "common/logging.h"
 #include "fe_utils/archive.h"
+#include "port/system_proxy.h"
 
 
 /*
@@ -58,7 +59,7 @@ RestoreArchivedFile(const char *path, const char *xlogfname,
 	 * Execute restore_command, which should copy the missing file from
 	 * archival storage.
 	 */
-	rc = system(xlogRestoreCmd);
+	rc = system_proxy(xlogRestoreCmd);
 	pfree(xlogRestoreCmd);
 
 	if (rc == 0)

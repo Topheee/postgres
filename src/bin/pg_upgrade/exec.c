@@ -12,6 +12,7 @@
 #include <fcntl.h>
 
 #include "pg_upgrade.h"
+#include "port/system_proxy.h"
 
 static void check_data_dir(ClusterInfo *cluster);
 static void check_bin_dir(ClusterInfo *cluster);
@@ -121,7 +122,7 @@ exec_prog(const char *log_file, const char *opt_log_file,
 	 * the file do not see to help.
 	 */
 	if (mainThreadId != GetCurrentThreadId())
-		result = system(cmd);
+		result = system_proxy(cmd);
 #endif
 
 	log = fopen(log_file, "a");
@@ -170,7 +171,7 @@ exec_prog(const char *log_file, const char *opt_log_file,
 	/* see comment above */
 	if (mainThreadId == GetCurrentThreadId())
 #endif
-		result = system(cmd);
+		result = system_proxy(cmd);
 
 	if (result != 0 && report_error)
 	{

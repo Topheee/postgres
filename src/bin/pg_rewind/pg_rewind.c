@@ -29,6 +29,7 @@
 #include "pg_rewind.h"
 #include "rewind_source.h"
 #include "storage/bufpage.h"
+#include "port/system_proxy.h"
 
 static void usage(const char *progname);
 
@@ -1128,7 +1129,7 @@ ensureCleanShutdown(const char *argv0)
 	snprintf(cmd, MAXCMDLEN, "\"%s\" --single -F -D \"%s\" template1 < \"%s\"",
 			 exec_path, datadir_target, DEVNULL);
 
-	if (system(cmd) != 0)
+	if (system_proxy(cmd) != 0)
 	{
 		pg_log_error("postgres single-user mode in target cluster failed");
 		pg_fatal("Command was: %s", cmd);

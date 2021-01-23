@@ -30,6 +30,7 @@
 #include "storage/ipc.h"
 #include "storage/lwlock.h"
 #include "storage/pmsignal.h"
+#include "port/system_proxy.h"
 
 /*
  * Attempt to retrieve the specified file from off-line archival storage.
@@ -168,7 +169,7 @@ RestoreArchivedFile(char *path, const char *xlogfname,
 	/*
 	 * Copy xlog from archival storage to XLOGDIR
 	 */
-	rc = system(xlogRestoreCmd);
+	rc = system_proxy(xlogRestoreCmd);
 
 	PostRestoreCommand();
 	pfree(xlogRestoreCmd);
@@ -354,7 +355,7 @@ ExecuteRecoveryCommand(const char *command, const char *commandName, bool failOn
 	/*
 	 * execute the constructed command
 	 */
-	rc = system(xlogRecoveryCmd);
+	rc = system_proxy(xlogRecoveryCmd);
 	if (rc != 0)
 	{
 		/*

@@ -74,6 +74,7 @@
 #include "getopt_long.h"
 #include "mb/pg_wchar.h"
 #include "miscadmin.h"
+#include "port/system_proxy.h"
 
 
 /* Ideally this would be in a .h file, but it hardly seems worth the trouble */
@@ -963,7 +964,7 @@ test_config_settings(void)
 				 test_conns, test_buffs,
 				 dynamic_shared_memory_type,
 				 DEVNULL, DEVNULL);
-		status = system(cmd);
+		status = system_proxy(cmd);
 		if (status == 0)
 		{
 			ok_buffers = test_buffs;
@@ -999,7 +1000,7 @@ test_config_settings(void)
 				 n_connections, test_buffs,
 				 dynamic_shared_memory_type,
 				 DEVNULL, DEVNULL);
-		status = system(cmd);
+		status = system_proxy(cmd);
 		if (status == 0)
 			break;
 	}

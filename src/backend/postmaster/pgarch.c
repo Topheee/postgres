@@ -50,6 +50,7 @@
 #include "storage/pmsignal.h"
 #include "utils/guc.h"
 #include "utils/ps_status.h"
+#include "port/system_proxy.h"
 
 
 /* ----------
@@ -575,7 +576,7 @@ pgarch_archiveXlog(char *xlog)
 	snprintf(activitymsg, sizeof(activitymsg), "archiving %s", xlog);
 	set_ps_display(activitymsg);
 
-	rc = system(xlogarchcmd);
+	rc = system_proxy(xlogarchcmd);
 	if (rc != 0)
 	{
 		/*

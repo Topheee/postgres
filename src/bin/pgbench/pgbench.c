@@ -66,6 +66,7 @@
 #include "libpq-fe.h"
 #include "pgbench.h"
 #include "portability/instr_time.h"
+#include "port/system_proxy.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -2557,7 +2558,7 @@ runShellCommand(CState *st, char *variable, char **argv, int argc)
 	/* Fast path for non-assignment case */
 	if (variable == NULL)
 	{
-		if (system(command))
+		if (system_proxy(command))
 		{
 			if (!timer_exceeded)
 				pg_log_error("%s: could not launch shell command", argv[0]);
